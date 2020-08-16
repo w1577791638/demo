@@ -1,0 +1,1 @@
+<?php exit;//a:1:{i:1;a:8:{s:5:"photo";a:3:{s:3:"src";s:49:"content/uploadfile/202008/thum-47a91596779298.png";s:5:"width";i:200;s:6:"height";i:200;}s:6:"avatar";s:49:"content/uploadfile/202008/thum-47a91596779298.png";s:9:"name_orig";s:1:"R";s:4:"name";s:1:"R";s:4:"mail";s:17:"1577791638@qq.com";s:3:"des";s:30:"微信公众号：今日在学";s:7:"ischeck";s:1:"n";s:4:"role";s:5:"admin";}}

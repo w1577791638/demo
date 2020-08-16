@@ -1,0 +1,79 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>R|导航留言板</title>
+<link rel="stylesheet" href="css/index.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome/css/font-awesome.min.css">
+</head>
+<body style="background-image: url(http://api.jybkw.cn/img/);">
+<div id="reset">
+<div id="talk">留言板-可拖动<span id="close">&times;</span></div>
+<div class="group"><label> 您的昵称 </label> <input type="text" id="username"></div>
+<div class="group"><label> 回车发送 <br/></label>
+<textarea id="content"></textarea></div>
+<input type="submit" value="发送" id="btn2">
+<input type="submit" value="取消" id="btn3">
+</div>
+<br/>
+<div id="box">
+<a id="btn">点击留言</a>
+<ul id="uls">
+<li>
+<div class="username">🤴一言</div>
+<p id="hitokoto">:R 获取中...耐心等待</p>
+<script  src="https://v1.hitokoto.cn/?encode=js&select=%23hitokoto" defer></script>
+</li>
+</ul>
+</div>
+<script src="https://libs.baidu.com/jquery/2.1.4/jquery.min.js"></script>
+<script src="js/index.js"></script>
+
+<script>
+        //锁定滚动条
+        function unScroll(){
+            var top=$(document).scrollTop();
+                $(document).on('scroll.unable',function (e){
+                $(document).scrollTop(top);
+            })
+        };
+        //打开滚动条
+        function removeUnScroll(){
+            $(document).unbind("scroll.unable");
+        };
+
+        $('btn').onclick = function () {
+            unScroll();
+        };
+        $('close').onclick = function () {
+            removeUnScroll();
+            Popup.show();
+        };
+        $('btn3').onclick = function () {
+            removeUnScroll();
+            Popup.show();
+        };
+        </script>
+        <script src="../../js/ab.js"></script>
+        <!--2d板娘-->
+        <script src="https://cdn.jsdelivr.net/gh/stevenjoezhang/live2d-widget@latest/autoload.js"></script>
+        <!--客服-->
+        <script src="../../js/kefu.js"></script>
+      <script>
+        var kefu = new Kefu({
+            index: "/",
+            tel: "zanwu",//电话号码
+            qq: "1577791638",//在线QQ
+            wechatPerson: {
+                state: true,// true是开启个人微信二维码, false不开启
+                imgURL: "../../img/xiaohao.png" //图片路径
+            },
+            wechatofficial: {
+                state: true,// true是开启微信公众号二维码, false不开启
+                imgURL: "../../img/gzh.png" //图片路径
+            }//微信公众号
+        });
+        </script>
+        
+</body>
+</html>

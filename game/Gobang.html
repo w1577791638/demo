@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+ <meta charset="UTF-8">
+ <title>五子棋</title>
+ <style>
+ * {
+  margin: 0;
+  padding: 0;
+ }
+ 
+ body {
+    margin-top:10px;
+    margin-left:10px;
+ }
+ 
+ canvas {
+  background-image: url("https://sbimg.cn/image/oimfN");
+  border: 1px solid #000;
+ }
+ 
+ </style>
+</head>
+<body>
+<canvas width="600" height="600" onclick="play(event)"></canvas>
+<script>
+ /*准备工作： 1获取画布，获取画笔对象 */
+ var mcanvas = document.querySelector("canvas");
+ var ctx = mcanvas.getContext("2d");
+ 
+ /*准备工作：2创建一个二维数组 用来定义绘制棋盘线*/
+ var count = 15;//用来定义棋盘的行数和列数
+ var map = new Array(count);
+ for (var i = 0; i < map.length; i++) {
+ map[i] = new Array(count);
+ for (var j = 0; j < map[i].length; j++) {
+  map[i][j] = 0;
+ }
+ }
+ /*准备工作：3初始化棋子*/
+ var black = new Image();
+ var white = new Image();
+ black.src = "img/black.png";
+ white.src = "img/white.png";
+ 
+ 
+ //开始绘制 1绘制棋盘线
+ ctx.strokeStyle = "#fff";
+ var rectWH = 40; //设置绘制矩形的大小
+ for (var i = 0; i < map.length; i++) {
+ for (var j = 0; j < map[i].length; j++) {
+  ctx.strokeRect(j * rectWH, i * rectWH, rectWH, rectWH);
+ }
+ }
+ 
+ // 用来进行黑白子的切换
+ var isBlack = true;
+ 
+ //开始绘制 2下子
+ function play(e) {
+ //获取点击canvas的位置值默认，canvas的左上角为（0,0） 点
+ var leftOffset = 20;//body 的margin
+ var x = e.clientX - leftOffset;
+ var y = e.clientY - leftOffset;
+ // console.log(x+" "+y);
+ // 设置点击点后棋子下在哪里,获取点击的位置进行判断如果超过格子的一半则绘制到下一个点如果小于 则绘制在上一个点上
+ var xv = (x - rectWH / 2) / rectWH;
+ var yv = (y - rectWH / 2) / rectWH;
+ 
+ var col = parseInt(xv) + 1;
+ var row = parseInt(yv) + 1;
+ console.log(xv + " " + yv + " , " + col + " " + row);
+ 
+ //严格点需要验证 ，验证所输入的点是否在数组中已经存在 ，如果存在 则返回
+ if (map[row][col] != 0) {
+  alert("咋的，还想往我身上下啊！瞎啊！没看见已经有棋子了！！！");
+  return;
+ }
+ 
+ // 切换绘制黑白子
+ if (isBlack) {
+  ctx.drawImage(black, col * 40 - 20, row * 40 - 20);
+  isBlack = false;
+  map[row][col] = 1;
+  Yes(1, row, col);
+ } else {
+  ctx.drawImage(white, col * 40 - 20, row * 40 - 20);
+  isBlack = true;
+  map[row][col] = 2;
+  Yes(2, row, col);
+ }
+ }
+ 
+ //算法验证，查看谁赢 tag :1 ：黑子 2 ：白子
+ function Yes(t, row, col) {
+ console.log(1);
+ var orgrow = row;
+ var orgcol = col;
+ var total = 1;
+ // 判断依据，以当前下的棋子为圆心，水平方向左右寻找和自己想通的值 ，最后判断如果大于5个则表示胜利
+ // 1水平方向判断
+ while (col - 1 > 0 && map[row][col - 1] == t) { //判断下一个值 注意一定是：col-1
+  total++;
+  col--;
+ }
+ row = orgrow;
+ col = orgcol;
+ while (col + 1 < 15 && map[row][col + 1] == t) {
+  col++;
+  total++;
+ }
+ if (total >= 5) {
+  if (t == 1){
+  alert("黑子赢");
+  } else{
+  alert("白子赢");
+  }
+  return;//判断出输赢结束后续判断
+ }
+ 
+ // 2垂直方向判断
+ row = orgrow;
+ col = orgcol;
+ total = 1;
+ while (row - 1 > 0 && map[row - 1][col] == t) {
+  row--;
+  total++;
+ }
+ row = orgrow;
+ col = orgcol;
+ while (row + 1 < 15 && map[row + 1][col] == t) {
+  row++;
+  total++;
+ }
+ if (total >= 5) {
+  if (t == 1){
+  alert("黑子赢");
+  } else{
+  alert("白子赢");
+  }
+  return;//判断出输赢结束后续判断
+ }
+ 
+ //左下 右上
+ row = orgrow;
+ col = orgcol;
+ total = 1;
+ while (row + 1 < 15 && col - 1 > 0 && map[row + 1][col - 1] == t) {
+  row++;
+  col--;
+  total++;
+ }
+ row = orgrow;
+ col = orgcol;
+ while (row - 1 > 0 && col + 1 < 15 && map[row - 1][col + 1] == t) {
+  row--;
+  col++;
+  total++;
+ }
+ if (total >= 5) {
+  if (t == 1){
+  alert("黑子赢");
+  } else{
+  alert("白子赢");
+  }
+  return;//判断出输赢结束后续判断
+ }
+ //左上右下
+ row = orgrow;
+ col = orgcol;
+ total = 1;
+ while (row - 1 > 0 && col - 1 > 0 && map[row - 1][col - 1] == t) {
+  row--;
+  col--;
+  total++;
+ }
+ row = orgrow;
+ col = orgcol;
+ while (row + 1 < 15 && col + 1 < 15 && map[row + 1][col + 1] == t) {
+  row++;
+  col++;
+  total++;
+ }
+ if (total >= 5) {
+  if (t == 1){
+  alert("黑子赢");
+  } else{
+  alert("白子赢");
+  }
+  return;//判断出输赢结束后续判断
+ }
+ }
+ 
+ 
+ /*功能扩充：
+  1当胜利后 弹框：a是否在来一局 b 精彩回复
+  a 如果点击在来一句 清空数据重新开始
+  b 精彩回放将棋盘黑白子按照下棋的顺序进行棋子编号2悔棋功能
+  3对算法的扩充
+  a如果是双三 则直接弹出胜利
+  b若是桶四 则直接弹出胜利
+ */
+</script>
+<footer><a href="https://wx1.sbimg.cn/2020/07/24/DOt56.gif" target="_blank" rel="noopener noreferrer">微信公众号：今日在学</a></footer>
+</body>
+</html>
